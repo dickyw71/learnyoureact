@@ -1,1 +1,1 @@
-### Repo for my *'learnyoureact'* node workshopper exercise solutions.
+### Repo for my *'learnyoureact'* nodeschool workshopper exercise solutions.
