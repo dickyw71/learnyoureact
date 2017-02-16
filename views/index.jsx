@@ -12,6 +12,8 @@ export default class TodoBox extends React.Component {
 	}
 }
 
+module.exports = TodoBox;
+
 class TodoList extends React.Component {
 	render() {
 		var todo = this.props.data.map(function (obj) { 
