@@ -25,6 +25,7 @@ class TodoList extends React.Component {
 		this.changeTitle = this.changeTitle.bind(this);
 		this.changeDetail = this.changeDetail.bind(this);
 		this.addTodo = this.addTodo.bind(this);
+		this.deleteTodo = this.deleteTodo.bind(this);
 	}
 
 	changeTitle(e) {
@@ -50,9 +51,16 @@ class TodoList extends React.Component {
 		})
 	}
 
+	deleteTodo(title) {
+		let data = this.state.data.filter((ele) => {
+			return ele.title !== title;
+		});
+		this.setState({ data: data });
+	}
+
 	render() {
-		let todo = this.state.data.map(function (obj) {
-			return <Todo title={obj.title} key={obj.title}>{obj.detail}</Todo>;
+		let todo = this.state.data.map((obj) => {
+			return <Todo title={obj.title} key={obj.title} onDelete={this.deleteTodo}>{obj.detail}</Todo>;
 		});
 		return (
 			<div className="todoList">
@@ -75,17 +83,30 @@ class TodoList extends React.Component {
 class Todo extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { checked: false };
+		this.state = {
+			checked: false,
+			toDoStyle: style.notCheckedTodo
+		};
+		this.handleChange = this.handleChange.bind(this);
+		this._onDelete = this._onDelete.bind(this);
 	}
 	handleChange(e) {
-		this.setState({ checked: e.target.checked });
+		this.setState({
+			checked: e.target.checked,
+			toDoStyle: e.target.checked ? style.checkedTodo : style.notCheckedTodo
+		});
+	}
+
+	_onDelete() {
+		this.props.onDelete(this.props.title);
 	}
 
 	render() {
 		return (
-			<tr style={this.state.checked ? style.checkedTodo : style.notCheckedTodo}>
+			<tr style={this.state.toDoStyle}>
+				<td style={style.tableContent}><button onClick={this._onDelete}>X</button></td>
 				<td style={style.tableContent}>
-					<input type="checkbox" checked={this.state.checked} onChange={this.handleChange.bind(this)} />
+					<input type="checkbox" checked={this.state.checked} onChange={this.handleChange} />
 				</td>
 				<td style={style.tableContent}>{this.props.title}</td>
 				<td style={style.tableContent}>{this.props.children}</td>
